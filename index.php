@@ -7,7 +7,7 @@ if(isset($_SESSION["login"])){
 require 'functions.php';
 //cek apakah udah dipencet
 if(isset($_POST["submit"])) {
-		if( registrasi($_POST)> 0 ){
+		if( registrasi($_POST)> 0 && set_point($_POST) ){
 			echo"<script>
 			alert('user baru berhasil ditambahkan')
 			</script>";
@@ -33,6 +33,7 @@ if( isset($_POST["login"]) ){
 		if( password_verify($password, $row["Password"]) ){
 			//Set session
 			$_SESSION["login"]=true;
+			$_SESSION["username"]=$username;
 			header("Location: dasboard.php");
 			exit();
 		}

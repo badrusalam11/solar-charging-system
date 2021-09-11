@@ -68,3 +68,58 @@ function registrasi($data){
 	mysqli_query($conn,$query);
 	return mysqli_affected_rows($conn);
 }
+
+function cek_kode_charge($data){
+	global $conn;
+	$kode_charge = $data['kode_charge'];
+	$select = "SELECT Kode_charge FROM kode_valid WHERE Kode_charge = '$kode_charge'";
+	$sql = mysqli_query($conn, $select);
+	return mysqli_affected_rows($conn);
+}
+
+function charge($data){
+	global $conn;
+	$username = htmlspecialchars($data["username"]);
+	$durasi = htmlspecialchars($data["tambahan"]);
+	$kode_charge = htmlspecialchars($data["kode_charge"]);
+	$kode_unik = rand();
+
+// query insert into
+	$query = "INSERT INTO history (Username, Kode_charge, Durasi, Kode_unik)
+			VALUES
+			('$username', '$kode_charge','$durasi', '$kode_unik')
+	";
+	mysqli_query($conn,$query);
+	return mysqli_affected_rows($conn);
+}
+function set_point($data){
+	global $conn;
+	$username = strtolower(stripslashes($data['Username']));
+	$point = 0;
+	// query insert into
+	$query = "INSERT INTO table_point (Username, Point)
+			VALUES
+			('$username', '$point')
+	";
+	mysqli_query($conn,$query);
+	return mysqli_affected_rows($conn);
+}
+
+function point($data){
+	global $conn;
+	$username = htmlspecialchars($data["username"]);
+	$durasi = htmlspecialchars($data["tambahan"]);
+	$point = $durasi * 2;
+
+// ambil data dari point
+	$select = "SELECT Point FROM table_point WHERE Username = '$username'";
+	$sql = mysqli_query($conn, $select);
+	$data = mysqli_fetch_assoc($sql);
+	$point_sebelumnya = $data['Point'];
+	$point_akhir = $point_sebelumnya + $point;
+// query UPDATE
+	$query = "UPDATE table_point SET Point = '$point_akhir' WHERE Username = '$username'
+	";
+	mysqli_query($conn,$query);
+	return mysqli_affected_rows($conn);
+}
