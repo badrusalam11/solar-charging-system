@@ -1,0 +1,2 @@
+document.getElementById("start").disabled = true;
+ setTimeout(function(){document.getElementById("start").disabled = false;},5000);
